@@ -1,5 +1,5 @@
-class T20Innings:
-    MAX_OVERS = 20
+class Innings:
+    
     MAX_WICKETS = 10
     def __init__(self,batting_team,bowling_team):
         self.batting_team = batting_team
@@ -19,10 +19,30 @@ class T20Innings:
             return self._run_scored /(self._legal_deliveries/6)
         else:
             return 0.0    
-match_A = T20Innings(batting_team="India",bowling_team="Australia")
-match_B = T20Innings(batting_team="RCB",bowling_team="RR")
+    @classmethod
+    def from_string(cls, match_string):
+
+        batting_team , bowling_team = match_string.split('-')
+        return cls(batting_team, bowling_team)
+    
+class ODIInnings(Innings):
+    MAX_OVERS = 50
+class T20Innings(Innings):
+    MAX_OVERS = 20
+
+    
+match_A = Innings(batting_team="India",bowling_team="Australia")
+match_B = Innings(batting_team="RCB",bowling_team="RR")
 match_A.add_runs(6)
 match_A.add_legal_delivery()
 match_A.add_wicket()
+match_1 = T20Innings.from_string("INDIA-AUSTRALIA")
+match_2 = ODIInnings.from_string("INDIA-ENGLAND")
+print(match_1.MAX_OVERS)
+print(match_2.MAX_OVERS)
+match_1.add_runs(6)
+match_2.add_runs(4)
+print(f"SCORE: {match_1._run_scored} / {match_1._wickets}")
+print(f"SCORE: {match_2._run_scored} / {match_2._wickets}")
 
 print(f"India's scorecard is {match_A._run_scored}/{match_A._wickets} , RR : {match_A.current_run_rate()}")
